@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:streaming_music/features/auth/domain/repository/auth_repostitory.dart';
 import 'package:streaming_music/features/auth/presentation/sign_up_screen.dart';
-import 'package:streaming_music/features/auth/presentation/welcome_page.dart';
+import 'package:streaming_music/features/auth/presentation/signup_or_signin.dart';
 
 import '../features/auth/presentation/login_page.dart';
 import '../service_locator.dart';

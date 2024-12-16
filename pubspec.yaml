@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: ">=2.17.2 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -29,11 +29,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  audioplayers: ^3.0.0
+  # audioplayers: ^3.0.0
   audioplayers_web: ^2.2.0
   http: ^0.13.5
   dartz: ^0.10.1
   flutter_svg: ^1.1.0
+  just_audio: ^0.9.37
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -44,6 +45,7 @@ dependencies:
   dio: ^5.7.0
   flutter_auth: ^0.0.1
   get_it: ^7.2.0
+  hydrated_bloc: ^9.1.5
 
 dev_dependencies:
   flutter_test:
@@ -73,8 +75,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/icons/
+    - assets/fonts/
     - assets/images/
+    - assets/vectors/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -10,6 +10,8 @@ class Song {
   final String? releaseDate;
   final int? playCount;
   final String audioPath;
+  // them song favorite
+  final bool isFavorite;
 
   Song({
     required this.songId,
@@ -20,7 +22,8 @@ class Song {
     this.genre,
     this.duration,
     this.releaseDate,
-    this.playCount
+    this.playCount,
+    required this.isFavorite
     });
 
 }

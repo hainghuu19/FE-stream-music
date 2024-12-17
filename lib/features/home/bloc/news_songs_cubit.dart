@@ -1,7 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spotify/domain/usecases/song/get_news_songs.dart';
-import 'package:spotify/presentation/home/bloc/news_songs_state.dart';
-
+import 'package:streaming_music/features/stream_music/domain/use_case/get_all_song.dart';
 import '../../../service_locator.dart';
 import 'news_songs_state.dart';
 
@@ -9,15 +7,16 @@ class NewsSongsCubit extends Cubit<NewsSongsState> {
 
   NewsSongsCubit() : super(NewsSongsLoading());
 
-  Future < void > getNewsSongs() async {
-    var returnedSongs = await sl < GetNewsSongsUseCase > ().call();
-    returnedSongs.fold(
+  Future < void > getNewsSongs(int songId) async {
+    emit(NewsSongsLoading());
+    final result = await getIt <GetAllSongsUseCase> ().call();
+    result.fold(
       (l) {
         emit(NewsSongsLoadFailure());
       },
-      (data) {
+      (songData) {
         emit(
-          NewsSongsLoaded(songs: data)
+          NewsSongsLoaded(songs: songData)
         );
       }
     );

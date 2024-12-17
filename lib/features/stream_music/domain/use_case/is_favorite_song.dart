@@ -5,8 +5,8 @@ import '../repositories/i_song_repository.dart';
 class IsFavoriteSongUseCase {
   final SongRepository songRepository;
 
-  IsFavoriteSongUseCase({required this.songRepository});
+  IsFavoriteSongUseCase(this.songRepository);
 
-  Future<Either<Failure, bool>> call({required String songId}) =>
+  Future<Either<Failure, bool>> call({required int songId}) =>
       songRepository.isSongFavorite(songId: songId);
 }

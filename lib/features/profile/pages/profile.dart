@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streaming_music/common/helpers/is_dark_mode.dart';
+import 'package:streaming_music/features/stream_music/domain/use_case/get_favorite_song.dart';
 
 import '../../../common/widgets/appbar/app_bar.dart';
 import '../../../common/widgets/favorite_button/favorite_button.dart';
 import '../../../core/configs/constants/app_urls.dart';
+import '../../../service_locator.dart';
 import '../../stream_music/presentation/song_player.dart';
 import '../bloc/favorite_songs_cubit.dart';
 import '../bloc/favorite_songs_state.dart';
@@ -66,7 +68,7 @@ class ProfilePage extends StatelessWidget {
                     shape: BoxShape.circle,
                     image: DecorationImage(
                       image: NetworkImage(
-                        state.userEntity.imageURL!
+                        state.userEntity.image
                       )
                     )
                   ),
@@ -77,7 +79,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 10,),
                 Text(
-                  state.userEntity.fullName!,
+                  state.userEntity.name,
                   style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold
@@ -101,7 +103,7 @@ class ProfilePage extends StatelessWidget {
 
   Widget _favoriteSongs() {
     return BlocProvider(
-      create: (context) => FavoriteSongsCubit()..getFavoriteSongs(),
+      create: (context) => getIt<FavoriteSongsCubit>(),       // ..getFavoriteSongs(userId: userId),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 16

@@ -1,11 +1,11 @@
-import 'package:spotify/domain/entities/song/song.dart';
+import '../../stream_music/domain/entity/song_entity.dart';
 
 abstract class PlayListState {}
 
 class PlayListLoading extends PlayListState {}
 
 class PlayListLoaded extends PlayListState {
-  final List<SongEntity> songs;
+  final List<Song> songs;
   PlayListLoaded({required this.songs});
 }
 

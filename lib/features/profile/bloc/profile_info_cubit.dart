@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spotify/domain/usecases/auth/get_user.dart';
-import 'package:spotify/presentation/profile/bloc/profile_info_state.dart';
-import 'package:spotify/service_locator.dart';
 import 'package:streaming_music/features/profile/bloc/profile_info_state.dart';
+import 'package:streaming_music/service_locator.dart';
+
+import '../../auth/domain/use_case/get_user_use_case.dart';
 
 class ProfileInfoCubit extends Cubit<ProfileInfoState> {
 
@@ -10,7 +10,7 @@ class ProfileInfoCubit extends Cubit<ProfileInfoState> {
 
   Future<void> getUser() async {
 
-    var user = await sl<GetUserUseCase>().call();
+    var user = await getIt<GetUserUseCase>().call();
 
     user.fold(
       (l){

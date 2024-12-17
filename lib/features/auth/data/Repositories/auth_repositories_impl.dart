@@ -40,4 +40,10 @@ class AuthRepositoryImpl extends AuthRepository{
     }
   }
 
+@override
+Future<Either<Failure, User>> getUser() {
+    // TODO: implement getUser
+    throw UnimplementedError();
+  }
+
 }

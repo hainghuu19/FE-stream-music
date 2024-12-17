@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spotify/common/widgets/appbar/app_bar.dart';
-import 'package:spotify/domain/entities/song/song.dart';
-import 'package:spotify/presentation/song_player/bloc/song_player_cubit.dart';
-import 'package:spotify/presentation/song_player/bloc/song_player_state.dart';
 import 'package:streaming_music/features/stream_music/presentation/blocs/song_bloc.dart';
-
+import 'package:streaming_music/features/stream_music/presentation/blocs/song_event.dart';
 import '../../../common/widgets/appbar/app_bar.dart';
 import '../../../common/widgets/favorite_button/favorite_button.dart';
 import '../../../core/configs/constants/app_urls.dart';
 import '../../../core/configs/theme/app_colors.dart';
+import '../domain/entity/song_entity.dart';
 import 'blocs/song_state.dart';
 
 class SongPlayerPage extends StatelessWidget {
-  final SongEntity songEntity;
+  final Song songEntity;
   const SongPlayerPage({required this.songEntity, super.key});
 
   @override
@@ -27,10 +24,11 @@ class SongPlayerPage extends StatelessWidget {
         action: IconButton(
             onPressed: () {}, icon: const Icon(Icons.more_vert_rounded)),
       ),
-      body: BlocProvider(
-        create: (_) => SongPlayerCubit()
-          ..loadSong(
-              '${AppURLs.songFirestorage}${songEntity.artist} - ${songEntity.title}.mp3?${AppURLs.mediaAlt}'),
+      body: null, // sua lai bloc provider
+      // body: BlocProvider(
+      //   create: (_) => SongBloc(songRepository: null)..add(PlaySongEvent(songId: songEntity.id)),
+      //     ..loadSong(
+      //         '${AppURLs.songFirestorage}${songEntity.artist} - ${songEntity.title}.mp3?${AppURLs.mediaAlt}'),
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           child: Builder(builder: (context) {
@@ -80,7 +78,7 @@ class SongPlayerPage extends StatelessWidget {
               height: 5,
             ),
             Text(
-              songEntity.artist,
+              songEntity.artistId,
               style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
             ),
           ],
@@ -96,32 +94,30 @@ class SongPlayerPage extends StatelessWidget {
         if (state is SongLoading) {
           return const CircularProgressIndicator();
         }
-        if (state is SongPlayerLoaded) {
+        if (state is SongLoading) {
+          return const CircularProgressIndicator();
+        }
+        if(state is SongPlaying || state is SongPaused) {
+          final songId = state is SongPlaying ? state.songId : (state as SongPaused).songId;
+          final songPosition = state is SongPlaying ? state.songPosition : Duration.zero ;
+          final songDuration = state is SongPlaying ? state.songDuration : Duration.zero ;
+        
           return Column(
             children: [
               Slider(
-                  value: context
-                      .read<SongPlayerCubit>()
-                      .songPosition
-                      .inSeconds
-                      .toDouble(),
+                  value: songPosition.inSeconds.toDouble(),
                   min: 0.0,
-                  max: context
-                      .read<SongPlayerCubit>()
-                      .songDuration
-                      .inSeconds
-                      .toDouble(),
-                  onChanged: (value) {}),
+                  max: songDuration.inSeconds.toDouble(),
+                  onChanged: (value) {}
+                  ),
               const SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(formatDuration(
-                      context.read<SongPlayerCubit>().songPosition)),
-                  Text(formatDuration(
-                      context.read<SongPlayerCubit>().songDuration))
+                  Text(formatDuration(songPosition)),
+                  Text(formatDuration(songDuration))
                 ],
               ),
               const SizedBox(
@@ -129,7 +125,11 @@ class SongPlayerPage extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  context.read<SongPlayerCubit>().playOrPauseSong();
+                  if(state is SongPlaying) {
+                    context.read<SongBloc>().add(PauseSongEvent(songId));
+                  } else if(state is SongPaused) {
+                    context.read<SongBloc>().add(ResumeSongEvent(songId));
+                  }
                 },
                 child: Container(
                   height: 60,
@@ -137,16 +137,22 @@ class SongPlayerPage extends StatelessWidget {
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle, color: AppColors.primary),
                   child: Icon(
-                      context.read<SongPlayerCubit>().audioPlayer.playing
-                          ? Icons.pause
-                          : Icons.play_arrow),
+                    state is SongPlaying ? Icons.pause : Icons.play_arrow,
+                    color: Colors.white,
+                      ),
                 ),
               )
             ],
           );
         }
 
-        return Container();
+        if (state is SongError) {
+          return Text('Error: ${state.message}', 
+          style: const TextStyle(color: Colors.red),
+          );
+        }
+
+        return const SizedBox.shrink(); // khong hien thi gi neu khong co suitable state
       },
     );
   }

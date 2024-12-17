@@ -12,9 +12,13 @@ class SongRepositoryImpl extends SongRepository{
   SongRepositoryImpl(this.songRemoteDataSource, this.audioService);
 
   @override
-  Future<Uint8List> getSong(int songId) async {
-    return await songRemoteDataSource.getSong(songId);
-
+  Future<Either<Failure, Uint8List>> getSong(int songId) async {
+    try{
+      final songData = await songRemoteDataSource.getSong(songId);
+      return Right(songData);
+    } catch (e) {
+      return Left(ServerFailure(message: 'Failed to get song'));
+    }
   }
 
 @override
@@ -30,7 +34,7 @@ Future<Either<Failure, bool>> addOrRemoveFavoriteSong({required String songId}) 
   }
   
   @override
-  Future<Either<Failure, List<int>>> getUserFavoriteSongs({int songId}) {
+  Future<Either<Failure, List<int>>> getUserFavoriteSongs({required int userId}) {
     // TODO: implement getUserFavoriteSongs
     throw UnimplementedError();
   }
@@ -38,6 +42,12 @@ Future<Either<Failure, bool>> addOrRemoveFavoriteSong({required String songId}) 
   @override
   Future<Either<Failure, bool>> isSongFavorite({required String songId}) {
     // TODO: implement isSongFavorite
+    throw UnimplementedError();
+  }
+
+@override
+Future<Either> getAllSongs() {
+    // TODO: implement getAllSongs
     throw UnimplementedError();
   }
   

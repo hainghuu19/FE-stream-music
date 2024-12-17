@@ -1,11 +1,11 @@
-import 'package:spotify/domain/entities/auth/user.dart';
+import '../../auth/domain/entity/user_entity.dart';
 
 abstract class ProfileInfoState{}
 
 class ProfileInfoLoading extends ProfileInfoState {}
 
 class ProfileInfoLoaded extends ProfileInfoState {
-  final UserEntity userEntity;
+  final User userEntity;
   ProfileInfoLoaded({required this.userEntity});
 }
 

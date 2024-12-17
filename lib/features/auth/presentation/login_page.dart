@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:spotify/common/widgets/appbar/app_bar.dart';
-import 'package:spotify/common/widgets/button/basic_app_button.dart';
-import 'package:spotify/core/configs/assets/app_vectors.dart';
-import 'package:spotify/data/models/auth/signin_user_req.dart';
-import 'package:spotify/presentation/auth/pages/signup.dart';
 import 'package:streaming_music/features/auth/presentation/sign_up_screen.dart';
-
 import '../../../common/widgets/appbar/app_bar.dart';
 import '../../../common/widgets/button/basic_app_button.dart';
 import '../../../core/configs/assets/app_vectors.dart';
-import '../../../domain/usecases/auth/sigin.dart';
 import '../../../service_locator.dart';
 import '../../home/pages/home.dart';
+import '../domain/use_case/register_usecase.dart';
 
 class SigninPage extends StatelessWidget {
   SigninPage({super.key});
 
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  final TextEditingController _username = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +42,14 @@ class SigninPage extends StatelessWidget {
             const SizedBox(height: 20,),
             BasicAppButton(
               onPressed: () async {
-                 var result = await sl<SigninUseCase>().call(
-                  params: SigninUserReq(
-                    email: _email.text.toString(),
-                    password: _password.text.toString()
-                  )
+                 var result = await getIt<RegisterUseCase>().call(
+                     _email.text.toString(),
+                    _password.text.toString(),
+                    _username.text.toString()
                 );
                 result.fold(
                   (l){
-                    var snackbar = SnackBar(content: Text(l),behavior: SnackBarBehavior.floating,);
+                    var snackbar = SnackBar(content: Text(l.toString()),behavior: SnackBarBehavior.floating,);
                     ScaffoldMessenger.of(context).showSnackBar(snackbar);
                   },
                   (r){

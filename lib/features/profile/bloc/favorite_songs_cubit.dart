@@ -33,7 +33,7 @@ FavoriteSongsCubit({
 
   Future<List<Song>> mapSongIdsToSongs(List<int> songIds) async {
     // Thay thế bằng logic thực tế để ánh xạ songId -> Song
-    return songIds.map((id) => Song(songId: id, title: 'Song $id', audioPath: '', isFavorite: true)).toList();
+    return songIds.map((id) => Song(songId: id, title: 'Song $id', audioPath: '', isFavorite: true, artist: '')).toList();
   }
 
   // Trong trường hợp không hiển thị danh sách bài hát yêu thích của người dùng như mong muốn -> phải có thêm getSOngDetail trong songRepository

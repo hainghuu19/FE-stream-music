@@ -19,7 +19,6 @@ class SongPaused extends SongState {
 
   SongPaused(this.songId);
   
-  @override
   List<Object?> get props => [songId];
 }
 

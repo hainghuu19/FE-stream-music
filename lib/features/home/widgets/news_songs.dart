@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streaming_music/common/helpers/is_dark_mode.dart';
+import '../../../core/configs/constants/app_urls.dart';
 import '../../../core/configs/theme/app_colors.dart';
 import '../../stream_music/domain/entity/song_entity.dart';
 import '../../stream_music/presentation/song_player.dart';
@@ -13,7 +14,7 @@ class NewsSongs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => NewsSongsCubit()..getNewsSongs(),
+      create: (_) => NewsSongsCubit()..getNewsSongs(1),
       child: SizedBox(
         height: 200,
         child: BlocBuilder<NewsSongsCubit,NewsSongsState>(

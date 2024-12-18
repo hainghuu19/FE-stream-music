@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streaming_music/common/helpers/is_dark_mode.dart';
-import 'package:streaming_music/features/stream_music/domain/use_case/get_favorite_song.dart';
-
 import '../../../common/widgets/appbar/app_bar.dart';
 import '../../../common/widgets/favorite_button/favorite_button.dart';
 import '../../../core/configs/constants/app_urls.dart';
@@ -75,7 +73,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 15,),
                 Text(
-                  state.userEntity.email!
+                  state.userEntity.email
                 ),
                 const SizedBox(height: 10,),
                 Text(
@@ -148,7 +146,7 @@ class ProfilePage extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20),
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                        '${AppURLs.coverFirestorage}${state.favoriteSongs[index].artist} - ${state.favoriteSongs[index].title}.jpg?${AppURLs.mediaAlt}'
+                                        '${AppURLs.coverFirestorage}${state.favoriteSongs[index].artistId} - ${state.favoriteSongs[index].title}.jpg?${AppURLs.mediaAlt}'
                                       )
                                     )
                                   ),

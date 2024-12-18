@@ -13,7 +13,7 @@ class PauseSongEvent extends SongEvent {
 
   PauseSongEvent(this.songId);
 
-  @override
+
   List<Object?> get props => [songId];
 
 }
@@ -23,7 +23,7 @@ class ResumeSongEvent extends SongEvent{
 
   ResumeSongEvent(this.songId);
 
-  @override
+
   List<Object?> get props => [songId];
   
 }

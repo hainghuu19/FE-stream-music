@@ -22,7 +22,7 @@ class SongRepositoryImpl extends SongRepository{
   }
 
 @override
-Future<Either<Failure, bool>> addOrRemoveFavoriteSong({required String songId}) {
+Future<Either<Failure, bool>> addOrRemoveFavoriteSong({required int songId}) {
     // TODO: implement addOrRemoveFavoriteSong
     throw UnimplementedError();
   }
@@ -40,7 +40,7 @@ Future<Either<Failure, bool>> addOrRemoveFavoriteSong({required String songId}) 
   }
   
   @override
-  Future<Either<Failure, bool>> isSongFavorite({required String songId}) {
+  Future<Either<Failure, bool>> isSongFavorite({required int songId}) {
     // TODO: implement isSongFavorite
     throw UnimplementedError();
   }

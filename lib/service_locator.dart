@@ -8,6 +8,7 @@ import 'package:streaming_music/features/auth/domain/use_case/register_usecase.d
 import 'package:streaming_music/features/stream_music/data/RemoteDataSource/song_remote_data_source.dart';
 import 'package:streaming_music/features/stream_music/data/Repositories/song_repositories_impl.dart';
 import 'package:streaming_music/features/stream_music/domain/repositories/i_song_repository.dart';
+import 'package:streaming_music/features/stream_music/domain/use_case/get_all_song.dart';
 import 'package:streaming_music/features/stream_music/domain/use_case/song_use_case.dart';
 import 'package:streaming_music/service/song_service.dart';
 import 'features/auth/data/RemoteDataSource/auth_remote_datasource.dart';
@@ -78,10 +79,6 @@ void setupDependencies() {
     () => GetPlaylistUseCase(getIt<SongRepository>()),
   );
 
-  getIt.registerLazySingleton<GetUserFavoriteSongsUseCase>(
-    () => GetUserFavoriteSongsUseCase(getIt<SongRepository>()),
-  );
-
   getIt.registerLazySingleton<SongUseCase>(
     () => SongUseCase(getIt<SongRepository>()),
   );
@@ -91,6 +88,10 @@ void setupDependencies() {
     getUserFavoriteSongsUseCase: getIt<GetUserFavoriteSongsUseCase>(), 
     songRepository: getIt<SongRepository>()
     ),
+  );
+
+  getIt.registerLazySingleton<GetAllSongsUseCase>(
+    () => GetAllSongsUseCase(getIt<SongRepository>()),
   );
     
 }

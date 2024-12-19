@@ -3,7 +3,7 @@ import '../features/auth/presentation/login_page.dart';
 import '../features/auth/presentation/sign_up_screen.dart';
 import '../features/auth/presentation/signup_or_signin.dart';
 import '../features/intro/pages/get_started.dart';
-import '../service_locator.dart';
+// import '../service_locator.dart';
 
 class AppRoute{
   static Route<dynamic> generateRoute(RouteSettings settings) {

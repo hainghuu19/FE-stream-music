@@ -10,10 +10,14 @@ class AuthRepositoryImpl extends AuthRepository{
   AuthRepositoryImpl(this.authRemoteDataSource);
 
   @override
-  Future<Either<Failure, User>> login(String email, String password) async {
+  Future<Either<Failure, String>> login(String username, String password) async {
     try{
-      final user = await authRemoteDataSource.login(email, password);
-      return Right(user);
+      final token = await authRemoteDataSource.login(username, password);
+
+      if (token.isEmpty) {
+        return Left(ServerFailure(message: 'Invalid token received'));
+      }
+      return Right(token);
     }catch(e){
       return Left(ServerFailure(message: 'Failed to login'));
 

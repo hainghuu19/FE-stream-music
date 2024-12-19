@@ -7,6 +7,6 @@ abstract class SongRepository{
   Future<Either<Failure, bool>> addOrRemoveFavoriteSong({required int songId});
   Future<Either<Failure, List<int>>> getUserFavoriteSongs({required int userId});
   Future<Either<Failure, bool>> isSongFavorite({required int songId});
-  Future<Either<Failure, void>> getPlaylist();
+  Future<Either> getPlaylist();
   Future<Either> getAllSongs();
 }

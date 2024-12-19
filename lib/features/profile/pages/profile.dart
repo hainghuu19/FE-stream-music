@@ -164,9 +164,9 @@ class ProfilePage extends StatelessWidget {
                                         ),
                                       ),
                                       const SizedBox(height: 5, ),
-                                        Text(
-                                          state.favoriteSongs[index].artist,
-                                          style: const TextStyle(
+                                       const Text(
+                                          'state.favoriteSongs[index].artist',
+                                          style:  TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 11
                                           ),

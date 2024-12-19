@@ -7,33 +7,26 @@ class AuthRemoteDataSource{
 
   AuthRemoteDataSource(this.dio);
 
-  Future<User> login(String username, String password) async{
-    final response = await dio.post(
-      'http://localhost:8080/api/auth/login',
-      queryParameters: {
-        'user_name': username, 
-        'password': password
-        },
-        
-        options: Options(
-          headers: {
+  Future<String> login(String username, String password) async {
+    try {
+      final response = await dio.post('http://10.0.2.2:8080/api/auth/login',
+          queryParameters: {'user_name': username, 'password': password},
+          options: Options(
+            headers: {
             'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          }
-        )
-    );
-
-    if(response.statusCode == 200){
-      final data = response.data;
-      return User(
-        id: data['id'],
-        name: data['name'], 
-        email: data['email'], 
-        password: data['password'], 
-        image: data['image']
+            'Accept': 'application/json',
+            },
+            responseType: ResponseType.plain
+          )
         );
-    } else{
-      throw FetchDataException();
+        
+        final token = response.data;
+        if (token == null || token.toString().isEmpty) {
+          throw FetchDataException(message: 'Invalid token received');
+        }
+        return token.toString(); 
+    } catch (e) {
+      throw FetchDataException(message: 'Login failed: ${e.toString()}');
     }
   }
 

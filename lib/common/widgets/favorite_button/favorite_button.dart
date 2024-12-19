@@ -30,8 +30,9 @@ class FavoriteButton extends StatelessWidget {
                   function!();
                 }
               },
-              icon: Icon(
-                songEntity.isFavorite ? Icons.favorite : Icons.favorite_outline_outlined,
+              icon: const Icon(
+                // songEntity.isFavorite ? Icons.favorite : Icons.favorite_outline_outlined,
+                Icons.favorite_outline_outlined,
                 size: 25,
                 color: AppColors.darkGrey,
               )

@@ -6,6 +6,7 @@ import '../../../common/widgets/button/basic_app_button.dart';
 import '../../../core/configs/assets/app_vectors.dart';
 import '../../../service_locator.dart';
 import '../../home/pages/home.dart';
+import '../domain/use_case/login_usecase.dart';
 import '../domain/use_case/register_usecase.dart';
 
 class SigninPage extends StatelessWidget {
@@ -42,10 +43,9 @@ class SigninPage extends StatelessWidget {
             const SizedBox(height: 20,),
             BasicAppButton(
               onPressed: () async {
-                 var result = await getIt<RegisterUseCase>().call(
+                 var result = await getIt<LoginUseCase>().call(
                      _email.text.toString(),
                     _password.text.toString(),
-                    _username.text.toString()
                 );
                 result.fold(
                   (l){

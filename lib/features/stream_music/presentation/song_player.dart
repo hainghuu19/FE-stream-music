@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:streaming_music/features/stream_music/domain/repositories/i_song_repository.dart';
 import 'package:streaming_music/features/stream_music/presentation/blocs/song_bloc.dart';
 import 'package:streaming_music/features/stream_music/presentation/blocs/song_event.dart';
+import 'package:streaming_music/service_locator.dart';
 import '../../../common/widgets/appbar/app_bar.dart';
 import '../../../common/widgets/favorite_button/favorite_button.dart';
 import '../../../core/configs/constants/app_urls.dart';
 import '../../../core/configs/theme/app_colors.dart';
+import '../../../service/song_service.dart';
 import '../domain/entity/song_entity.dart';
 import 'blocs/song_state.dart';
 
@@ -24,11 +27,10 @@ class SongPlayerPage extends StatelessWidget {
         action: IconButton(
             onPressed: () {}, icon: const Icon(Icons.more_vert_rounded)),
       ),
-      body: null, // sua lai bloc provider
-      // body: BlocProvider(
-      //   create: (_) => SongBloc(songRepository: null)..add(PlaySongEvent(songId: songEntity.id)),
-      //     ..loadSong(
-      //         '${AppURLs.songFirestorage}${songEntity.artist} - ${songEntity.title}.mp3?${AppURLs.mediaAlt}'),
+      body: BlocProvider(
+        create: (_) => SongBloc(songRepository: getIt<SongRepository>(), getIt<AudioService>())..add(PlaySongEvent(songEntity.songId)),
+          // ..loadSong(
+          //     '${AppURLs.songFirestorage}${songEntity.artist} - ${songEntity.title}.mp3?${AppURLs.mediaAlt}'),
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           child: Builder(builder: (context) {
@@ -59,7 +61,7 @@ class SongPlayerPage extends StatelessWidget {
           image: DecorationImage(
               fit: BoxFit.cover,
               image: NetworkImage(
-                  '${AppURLs.coverFirestorage}${songEntity.artist} - ${songEntity.title}.jpg?${AppURLs.mediaAlt}'))),
+                  '${AppURLs.coverFirestorage}${songEntity.artistId} - ${songEntity.title}.jpg?${AppURLs.mediaAlt}'))),
     );
   }
 
@@ -77,9 +79,9 @@ class SongPlayerPage extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            Text(
-              songEntity.artistId,
-              style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+            const Text(
+              'songEntity.artist',  // sua tam thanh text
+              style:  TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
             ),
           ],
         ),

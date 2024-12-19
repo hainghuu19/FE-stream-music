@@ -14,7 +14,7 @@ class NewsSongs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => NewsSongsCubit()..getNewsSongs(1),
+      create: (_) => NewsSongsCubit()..getAllSongs(),
       child: SizedBox(
         height: 200,
         child: BlocBuilder<NewsSongsCubit,NewsSongsState>(
@@ -31,8 +31,8 @@ class NewsSongs extends StatelessWidget {
                 state.songs
               );
             }
-
             return Container();
+
           },
         )
         
@@ -69,7 +69,7 @@ class NewsSongs extends StatelessWidget {
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: NetworkImage(
-                          '${AppURLs.coverFirestorage}${songs[index].artist} - ${songs[index].title}.jpg?${AppURLs.mediaAlt}'
+                          '${AppURLs.coverFirestorage}${songs[index].songId} - ${songs[index].title}.jpg?${AppURLs.mediaAlt}'
                         )
                       )
                     ),
@@ -100,9 +100,9 @@ class NewsSongs extends StatelessWidget {
                   ),
                 ) ,
                 const SizedBox(height: 5,),
-                Text(
-                  songs[index].artist,
-                  style: const TextStyle(
+                const Text(
+                  'songs[index].artist', // sua tam thanh text
+                  style:  TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 12
                   ),

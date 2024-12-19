@@ -4,28 +4,30 @@ class Song {
   final int songId;
   final String title;
   final int? artistId;
-  final int? albumId;
+  final String? albumTitle;
   final String? genre;
   final int? duration;
   final String? releaseDate;
   final int? playCount;
-  final String audioPath;
+  final String? audioFilePath;
   // them song favorite
-  final bool isFavorite;
-  final String artist;
+  final bool? isFavorite;
+  final String? artistName;
+  final int? likeCount;
 
   Song({
     required this.songId,
     required this.title,
-    required this.audioPath,
+    this.audioFilePath,
     this.artistId,
-    this.albumId,
+    this.albumTitle,
     this.genre,
     this.duration,
     this.releaseDate,
     this.playCount,
-    required this.isFavorite,
-    required this.artist
+    this.isFavorite,
+    this.artistName,
+    this.likeCount
     });
 
 }

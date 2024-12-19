@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:streaming_music/config/app_routes.dart';
+import 'package:streaming_music/features/splash/pages/splash.dart';
 import 'package:streaming_music/service_locator.dart';
 
 
@@ -19,8 +20,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      onGenerateRoute: AppRoute.generateRoute,
-      initialRoute: AppRoutePath.welcomePage,
+      home:  const SplashPage()
+      // onGenerateRoute: AppRoute.generateRoute,
+      // initialRoute: AppRoutePath.welcomePage,
     );
   }
 }

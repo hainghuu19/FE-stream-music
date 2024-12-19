@@ -20,6 +20,4 @@ class PlayListCubit extends Cubit<PlayListState> {
       }
     );
   }
-  
-  
 }

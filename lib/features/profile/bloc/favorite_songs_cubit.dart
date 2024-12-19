@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../service_locator.dart';
 import '../../stream_music/domain/entity/song_entity.dart';
@@ -33,7 +32,7 @@ FavoriteSongsCubit({
 
   Future<List<Song>> mapSongIdsToSongs(List<int> songIds) async {
     // Thay thế bằng logic thực tế để ánh xạ songId -> Song
-    return songIds.map((id) => Song(songId: id, title: 'Song $id', audioPath: '', isFavorite: true, artist: '')).toList();
+    return songIds.map((id) => Song(songId: id, title: 'Song $id', audioFilePath: '', isFavorite: true, artistName: '')).toList();
   }
 
   // Trong trường hợp không hiển thị danh sách bài hát yêu thích của người dùng như mong muốn -> phải có thêm getSOngDetail trong songRepository

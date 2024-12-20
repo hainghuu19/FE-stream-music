@@ -1,63 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:streaming_music/config/app_routes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:streaming_music/features/splash/pages/splash.dart';
 import 'package:streaming_music/service_locator.dart';
+import 'package:path_provider/path_provider.dart';
+
+import 'core/configs/theme/app_theme.dart';
+import 'features/choose_mode/bloc/theme_cubit.dart';
 
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Khởi tạo HydratedStorage
+  final storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
+  // Gán storage cho HydratedBloc
+  HydratedBloc.storage = storage;
+
   setupDependencies();
   runApp(const MyApp());
 }
 
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+
+// @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider(
+//       create: (_) =>
+//           ThemeCubit(), // Thay thế ThemeCubit bằng Bloc bạn muốn sử dụng
+//       child: BlocBuilder<ThemeCubit, ThemeMode>(
+//         builder: (context, mode) => MaterialApp(
+//           theme: AppTheme.lightTheme,
+//           darkTheme: AppTheme.darkTheme,
+//           themeMode: mode,
+//           debugShowCheckedModeBanner: false,
+//           home: const SplashPage(),
+//         )
+//     ),
+//     );
+//   }
+// }
+
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Music Player',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (_) => ThemeCubit())],
+      child: BlocBuilder<ThemeCubit, ThemeMode>(
+        builder: (context, mode) => MaterialApp(
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: mode,
+            debugShowCheckedModeBanner: false,
+            home: const SplashPage()),
       ),
-      home:  const SplashPage()
-      // onGenerateRoute: AppRoute.generateRoute,
-      // initialRoute: AppRoutePath.welcomePage,
     );
   }
 }
-
-// class MusicPlayer extends StatefulWidget {
-//   @override
-//   _MusicPlayerState createState() => _MusicPlayerState();
-// }
-
-// class _MusicPlayerState extends State<MusicPlayer> {
-//   final AudioPlayer _audioPlayer = AudioPlayer();
-
-//   Future<void> playSong(int songId) async {
-//     final response = await http.get(
-//       Uri.parse('http://10.0.2.2:8080/api/songs/play/$songId'),
-//     );
-
-//     if (response.statusCode == 200) {
-//       Uint8List bytes = response.bodyBytes;
-//       await _audioPlayer.play(BytesSource(bytes));
-//     } else {
-//       print('Không thể phát bài hát');
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('Music Player')),
-//       body: Center(
-//         child: ElevatedButton(
-//           onPressed: () => playSong(2), // Phát bài hát với ID 1
-//           child: const Text('Play Song'),
-//         ),
-//       ),
-//     );
-//   }
-// }

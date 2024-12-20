@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:streaming_music/error/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:streaming_music/features/stream_music/data/RemoteDataSource/song_remote_data_source.dart';
+import 'package:streaming_music/features/stream_music/domain/entity/playlist_entity.dart';
 import 'package:streaming_music/service/song_service.dart';
 import '../../domain/entity/song_entity.dart';
 import '../../domain/repositories/i_song_repository.dart';
@@ -29,9 +30,29 @@ Future<Either<Failure, bool>> addOrRemoveFavoriteSong({required int songId}) {
   }
   
   @override
-  Future<Either<Failure, void>> getPlaylist() {
-    
-    throw UnimplementedError();
+  Future<Either<Exception, List<PlayListEntity>>> getPlaylist() async {
+    try {
+      final playlistModels = await songRemoteDataSource.getAllPlaylists();
+      // Chuyển từ SongModel sang Song Entity
+      final playlists = playlistModels
+          .map((model) => PlayListEntity(
+                songId: model.songId,
+                title: model.title,
+                audioFilePath: model.audioFilePath,
+                artistId: model.artistId,
+                albumTitle: model.albumTitle,
+                genre: model.genre,
+                duration: model.duration,
+                releaseDate: model.releaseDate,
+                playCount: model.playCount,
+                isFavorite: model.isFavorite,
+                artistName: model.artistName,
+              ))
+          .toList();
+      return Right(playlists);
+    } catch (e) {
+      return Left(Exception('Failed to fetch songs: $e'));
+    }
   }
   
   @override

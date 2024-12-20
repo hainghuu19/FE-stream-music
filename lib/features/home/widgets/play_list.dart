@@ -114,9 +114,9 @@ class PlayList extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 5,),
-                       const Text(
-                        'songs[index].songId,',
-                        style: TextStyle(
+                        Text(
+                        songs[index].artistName!,
+                        style: const TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 11
                         ),

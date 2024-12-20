@@ -7,6 +7,6 @@ class RegisterUseCase{
   RegisterUseCase(this.authRepository);
 
   Future<Either<Failure,void>> call(String username, String email, String password){
-    return authRepository.register(email, password, username);
+    return authRepository.register(username, email, password);
   }
 }

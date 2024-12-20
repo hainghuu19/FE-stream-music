@@ -100,9 +100,9 @@ class NewsSongs extends StatelessWidget {
                   ),
                 ) ,
                 const SizedBox(height: 5,),
-                const Text(
-                  'songs[index].artist', // sua tam thanh text
-                  style:  TextStyle(
+                 Text(
+                  songs[index].artistName!, // sua tam thanh text
+                  style:  const TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 12
                   ),

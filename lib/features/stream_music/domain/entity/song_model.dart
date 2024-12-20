@@ -4,8 +4,8 @@ class SongModel extends Song {
    SongModel({
     required int songId,
     required String title,
-    required String artistName, // Match với DTO
-    required String albumTitle, // Match với DTO
+    required String artistName, 
+    required String albumTitle, 
     String? genre,
     int? duration,
     String? audioFilePath,
@@ -29,9 +29,9 @@ class SongModel extends Song {
   factory SongModel.fromJson(Map<String, dynamic> json) {
     return SongModel(
       songId: json['songId'] as int,
-      title: json['title'] as String ?? 'Unknow Title',
-      audioFilePath: json['audioFilePath'] as String ?? 'Unknow Title',
-      artistName: json['artistName'] as String ?? 'Unknow Title',
+      title: json['title'] as String,
+      audioFilePath: json['audioFilePath'] as String,
+      artistName: json['artistName'] as String,
       albumTitle: json['albumTitle'] as String? ?? 'Unknow Title',
       genre: json['genre'] as String? ?? 'Unknow Title',
       duration: json['duration'] as int?,

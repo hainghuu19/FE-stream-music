@@ -7,7 +7,6 @@ import '../../../core/configs/assets/app_vectors.dart';
 import '../../../service_locator.dart';
 import '../../home/pages/home.dart';
 import '../domain/use_case/login_usecase.dart';
-import '../domain/use_case/register_usecase.dart';
 
 class SigninPage extends StatelessWidget {
   SigninPage({super.key});

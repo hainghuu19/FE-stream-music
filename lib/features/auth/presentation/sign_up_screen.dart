@@ -87,7 +87,7 @@ class SignupPage extends StatelessWidget {
     return TextField(
       controller: _fullName,
       decoration: const InputDecoration(
-        hintText: 'Full Name'
+        hintText: 'User Name'
       ).applyDefaults(
         Theme.of(context).inputDecorationTheme
       ),

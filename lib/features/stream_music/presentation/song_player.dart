@@ -29,8 +29,6 @@ class SongPlayerPage extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (_) => SongBloc(songRepository: getIt<SongRepository>(), getIt<AudioService>())..add(PlaySongEvent(songEntity.songId)),
-          // ..loadSong(
-          //     '${AppURLs.songFirestorage}${songEntity.artist} - ${songEntity.title}.mp3?${AppURLs.mediaAlt}'),
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
           child: Builder(builder: (context) {
@@ -61,7 +59,7 @@ class SongPlayerPage extends StatelessWidget {
           image: DecorationImage(
               fit: BoxFit.cover,
               image: NetworkImage(
-                  '${AppURLs.coverFirestorage}${songEntity.artistId} - ${songEntity.title}.jpg?${AppURLs.mediaAlt}'))),
+                  '${AppURLs.coverFirestorage}products%2Fimages%2F${songEntity.songId}.jpg?${AppURLs.mediaAlt}'))),
     );
   }
 
@@ -79,9 +77,9 @@ class SongPlayerPage extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            const Text(
-              'songEntity.artist',  // sua tam thanh text
-              style:  TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+             Text(
+              songEntity.artistName!,  // sua tam thanh text
+              style:  const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
             ),
           ],
         ),
@@ -107,10 +105,25 @@ class SongPlayerPage extends StatelessWidget {
           return Column(
             children: [
               Slider(
-                  value: songPosition.inSeconds.toDouble(),
+                  value: songDuration.inSeconds > 0
+                      ? songPosition.inSeconds
+                          .toDouble()
+                          .clamp(0.0, songDuration.inSeconds.toDouble())
+                      : 0.0,
                   min: 0.0,
-                  max: songDuration.inSeconds.toDouble(),
-                  onChanged: (value) {}
+                  max: songDuration.inSeconds > 0
+                      ? songDuration.inSeconds.toDouble()
+                      : 1.0,
+                  onChanged: (value) {
+                    final newPosition = Duration(seconds: value.toInt());
+
+                    // Gửi sự kiện cập nhật vị trí mới
+                    context.read<SongBloc>().add(UpdateSongPositionEvent(
+                          songId: songId,
+                          songPosition: newPosition,
+                          songDuration: songDuration,
+                        ));
+                  }
                   ),
               const SizedBox(
                 height: 20,

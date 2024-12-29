@@ -11,7 +11,6 @@ class PlayListCubit extends Cubit<PlayListState> {
     var returnedSongs = await getIt < GetAllSongsUseCase > ().call();
     returnedSongs.fold(
       (l) {
-        print('DEBUG LOAD PLAYLIST ERROR: $l');
         emit(PlayListLoadFailure());
       },
       (data) {

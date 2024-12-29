@@ -14,6 +14,8 @@ class SongBloc extends Bloc<SongEvent, SongState> {
     on<PauseSongEvent>(_onPauseSong);
     on<ResumeSongEvent>(_onResumeSong);
     on<StopSongEvent>(_onStopSong);
+    on<UpdateSongPositionEvent>(_onUpdateSongPosition);
+
 
     audioService.positionStream.listen((position) {
       if (state is SongPlaying) {
@@ -91,5 +93,24 @@ class SongBloc extends Bloc<SongEvent, SongState> {
     }
   }
 
+  void _onUpdateSongPosition(
+      UpdateSongPositionEvent event, Emitter<SongState> emit) {
+    if (state is SongPlaying) {
+      final currentState = state as SongPlaying;
 
+      // Giới hạn songPosition để không vượt quá songDuration
+      final safePosition = event.songPosition <= event.songDuration
+          ? event.songPosition
+          : event.songDuration;
+
+      // Cập nhật trạng thái với songPosition và songDuration mới
+      emit(SongPlaying(
+        songId: currentState.songId,
+        songPosition: safePosition,
+        songDuration: event.songDuration,
+      ));
+
+      
+    }
+  }
 }

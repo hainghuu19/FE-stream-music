@@ -17,16 +17,13 @@ class PlayList extends StatelessWidget {
       create: (_) => PlayListCubit()..getPlayList(),
       child: BlocBuilder<PlayListCubit,PlayListState>(
         builder:(context,state) {
-          print('DEBUG: CURRENT STATE IS: $state');
           if(state is PlayListLoading) {
-            print('DEBUG: CURRENT STATE IS: lOADINg');
             return Container(
               alignment: Alignment.center,
               child: const CircularProgressIndicator(),
             );
           }
           if(state is PlayListLoaded) {
-            print('DEBUG: CURRENT STATE IS: LOADED');
             return Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 40,

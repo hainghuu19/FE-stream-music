@@ -69,7 +69,7 @@ class NewsSongs extends StatelessWidget {
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: NetworkImage(
-                          '${AppURLs.coverFirestorage}${songs[index].songId} - ${songs[index].title}.jpg?${AppURLs.mediaAlt}'
+                          '${AppURLs.coverFirestorage}products%2Fimages%2F${songs[index].songId}.jpg?${AppURLs.mediaAlt}'
                         )
                       )
                     ),
@@ -101,7 +101,7 @@ class NewsSongs extends StatelessWidget {
                 ) ,
                 const SizedBox(height: 5,),
                  Text(
-                  songs[index].artistName!, // sua tam thanh text
+                  songs[index].artistName!, 
                   style:  const TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: 12

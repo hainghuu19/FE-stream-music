@@ -1,8 +1,11 @@
+
 import 'package:dio/dio.dart';
 import 'package:streaming_music/error/exception.dart';
 
+
 class AuthRemoteDataSource{
   final Dio dio;
+
 
   AuthRemoteDataSource(this.dio);
 
@@ -56,6 +59,28 @@ class AuthRemoteDataSource{
       throw ServerException();
     }
   }
+
+
+
+  // Future<UserProfileModel> getUser() async {
+  //   final token = await authProvider.getToken();
+  //   final response = await dio.get(
+  //     'http://10.0.2.2:8080//api/users/profile',
+  //     options: Options(
+  //       headers: {
+  //         'Authorization': 'Bearer $token',
+  //       },
+  //     ),
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     return UserProfileModel.fromJson(json.decode(response.body));
+  //   } else {
+  //     throw ServerException();
+  //   }
+  // }
+
+
 
 
 

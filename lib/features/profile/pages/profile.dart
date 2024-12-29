@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streaming_music/common/helpers/is_dark_mode.dart';
 import '../../../common/widgets/appbar/app_bar.dart';
-import '../../../common/widgets/favorite_button/favorite_button.dart';
 import '../../../core/configs/constants/app_urls.dart';
-import '../../../service_locator.dart';
-import '../../stream_music/presentation/song_player.dart';
-import '../bloc/favorite_songs_cubit.dart';
-import '../bloc/favorite_songs_state.dart';
 import '../bloc/profile_info_cubit.dart';
 import '../bloc/profile_info_state.dart';
 
@@ -18,17 +13,17 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BasicAppbar(
-        backgroundColor: Color(0xff2C2B2B) ,
-        title: Text(
-          'Profile'
-        ),
+        backgroundColor: Color(0xff2C2B2B),
+        title: Text('Profile'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           _profileInfo(context),
-           const SizedBox(height: 30,),
-           _favoriteSongs()
+          _profileInfo(context),
+          const SizedBox(
+            height: 30,
+          ),
+          _favoriteSongs() 
         ],
       ),
     );
@@ -38,177 +33,306 @@ class ProfilePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ProfileInfoCubit()..getUser(),
       child: Container(
-        height: MediaQuery.of(context).size.height / 3.5 ,
+        height: MediaQuery.of(context).size.height / 3.5,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: context.isDarkMode ? const Color(0xff2C2B2B) : Colors.white,
-          borderRadius: const BorderRadius.only(
-            bottomRight: Radius.circular(50),
-            bottomLeft: Radius.circular(50)
-          )
-        ),
-        child: BlocBuilder<ProfileInfoCubit,ProfileInfoState>(
-        builder: (context, state) {
-          if(state is ProfileInfoLoading) {
-            return Container(
-              alignment: Alignment.center,
-              child: const CircularProgressIndicator()
-            );
-          } 
-          if(state is ProfileInfoLoaded) {
+            color: context.isDarkMode ? const Color(0xff2C2B2B) : Colors.white,
+            borderRadius: const BorderRadius.only(
+                bottomRight: Radius.circular(50),
+                bottomLeft: Radius.circular(50))),
+        child: BlocBuilder<ProfileInfoCubit, ProfileInfoState>(
+          builder: (context, state) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                   height: 90,
                   width: 90,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        state.userEntity.image
-                      )
-                    )
-                  ),
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(image: NetworkImage(
+                          '${AppURLs.coverFirestorage}products%2Fimages%2F1.jpg?${AppURLs.mediaAlt}'))),
                 ),
-                const SizedBox(height: 15,),
-                Text(
-                  state.userEntity.email
+                const SizedBox(
+                  height: 15,
                 ),
-                const SizedBox(height: 10,),
-                Text(
-                  state.userEntity.name,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold
-                  ),
+                const Text(
+                    'nguyenhuuhai7a@gmail.com'),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  'Nguyen Huu Hai',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 )
               ],
             );
-          }
-
-          if(state is ProfileInfoFailure) {
-            return const Text(
-              'Please try again'
-            );
-          }
-          return Container();
-        }, 
-      ),
+          },
+        ),
       ),
     );
   }
 
   Widget _favoriteSongs() {
-    return BlocProvider(
-      create: (context) => getIt<FavoriteSongsCubit>(),       // ..getFavoriteSongs(userId: userId),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16
-        ),
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'FAVORITE SONGS',
             ),
-            
             const SizedBox(
               height: 20,
             ),
-            BlocBuilder<FavoriteSongsCubit,FavoriteSongsState>(
-              builder: (context,state) {
-                if(state is FavoriteSongsLoading) {
-                  return const CircularProgressIndicator();
-                }
-                if(state is FavoriteSongsLoaded) {
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: (){
-                          Navigator.push(
-                            context, 
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => SongPlayerPage(songEntity: state.favoriteSongs[index])
-                            )
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  height: 70,
-                                  width: 70,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        '${AppURLs.coverFirestorage}${state.favoriteSongs[index].artistId} - ${state.favoriteSongs[index].title}.jpg?${AppURLs.mediaAlt}'
-                                      )
-                                    )
-                                  ),
-                                ),
-                      
-                                const SizedBox(width: 10, ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        state.favoriteSongs[index].title,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5, ),
-                                       const Text(
-                                          'state.favoriteSongs[index].artist',
-                                          style:  TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 11
-                                          ),
-                                        ),
-                                    ],
-                                  )
-                      
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  state.favoriteSongs[index].duration.toString().replaceAll('.', ':')
-                                ),
-                                const SizedBox(width: 20, ),
-                                  FavoriteButton(
-                                    songEntity: state.favoriteSongs[index],
-                                    key: UniqueKey(),
-                                    function: (){
-                                      context.read<FavoriteSongsCubit>().removeSong(index);
-                                    },
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) => const SizedBox(height: 20,),
-                    itemCount: state.favoriteSongs.length
-                 );
-                }
-                if(state is FavoriteSongsFailure) {
-                  return const Text(
-                    'Please try again.'
-                  );
-                }
-                return Container();
-              } ,
-            )
-          ],
-        ),
+            Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: const DecorationImage(
+                            image: NetworkImage(
+                                '${AppURLs.coverFirestorage}products%2Fimages%2F2.jpg?${AppURLs.mediaAlt}'))),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Hãy trao cho anh',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Son Tung MTP',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 11),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              Row(
+                children: const [
+                  Text('3:47'),
+                  SizedBox(
+                    width: 20,
+                  ),
+                ],
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: const DecorationImage(
+                            image: NetworkImage(
+                                '${AppURLs.coverFirestorage}products%2Fimages%2F3.jpg?${AppURLs.mediaAlt}'))),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Đi về nhà',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Đen Vâu',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 11),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              Row(
+                children: const [
+                  Text('4:12'),
+                  SizedBox(
+                    width: 20,
+                  ),
+                ],
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: const DecorationImage(
+                            image: NetworkImage(
+                                '${AppURLs.coverFirestorage}products%2Fimages%2F4.jpg?${AppURLs.mediaAlt}'))),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Đừng hỏi em',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Mỹ Tâm',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 11),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              Row(
+                children: const [
+                  Text('3:50'),
+                  SizedBox(
+                    width: 20,
+                  ),
+                ],
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: const DecorationImage(
+                            image: NetworkImage(
+                                '${AppURLs.coverFirestorage}products%2Fimages%2F5.jpg?${AppURLs.mediaAlt}'))),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Dành cho em',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Hoàng Dũng',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 11),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              Row(
+                children: const [
+                  Text('3:46'),
+                  SizedBox(
+                    width: 20,
+                  ),
+                ],
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 70,
+                    width: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: const DecorationImage(
+                            image: NetworkImage(
+                                '${AppURLs.coverFirestorage}products%2Fimages%2F6.jpg?${AppURLs.mediaAlt}'))),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Đông kiếm em',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        'Vũ.',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w400, fontSize: 11),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              Row(
+                children: const [
+                  Text('4:20'),
+                  SizedBox(
+                    width: 20,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
       ),
     );
   }

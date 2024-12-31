@@ -6,7 +6,10 @@ import '../../../common/widgets/appbar/app_bar.dart';
 import '../../../core/configs/assets/app_images.dart';
 import '../../../core/configs/assets/app_vectors.dart';
 import '../../../core/configs/theme/app_colors.dart';
+import '../../artist/artist_list.dart';
+import '../../music_news/music_news.dart';
 import '../../profile/pages/profile.dart';
+import '../../songs_ranking/song_ranking.dart';
 import '../widgets/news_songs.dart';
 import '../widgets/play_list.dart';
 
@@ -60,9 +63,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 controller: _tabController,
                 children: [
                   const NewsSongs(),
-                  Container(),
-                  Container(),
-                  Container()
+                  const TopSongsPage(),
+                  ArtistsGridPage(),
+                  const MusicNewsPage(),
                 ],
               ),
             ),
@@ -109,7 +112,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       labelColor: context.isDarkMode ? Colors.white : Colors.black,
       indicatorColor: AppColors.primary,
       padding: const EdgeInsets.symmetric(
-        vertical: 40,
+        vertical: 30,
         horizontal: 16
       ),
       tabs: const [
@@ -121,7 +124,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           ),
         ),
         Text(
-          'Videos',
+          'Songs Ranking',
            style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 16
@@ -135,7 +138,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           ),
         ),
         Text(
-          'Podcasts',
+          'Music News',
            style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 16
